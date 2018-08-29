@@ -26,7 +26,10 @@ plt.plot(x,v,'--',label="Numerical solution")
 plt.legend()
 plt.ylabel('u,v')
 plt.xlabel('x')
-plt.title('n=10')
+plt.title('n=1000, h=9.99*10^-4')
+
+plt.ylim(0,0.8)
+plt.xlim(0,1)
 
 #for i in range (1,20):
 #    print(table(i,1))
