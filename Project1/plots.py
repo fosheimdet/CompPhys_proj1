@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 #    print(contents)
 #f.close()
 
-table = np.loadtxt('gaussian_elimination.txt',usecols=range(0),skiprows=1)
+table = np.loadtxt('gaussian_elimination1000x1000.txt',usecols=range(0),skiprows=1)
 
 x = table[:,0]
 u = table[:,1]

@@ -16,11 +16,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace arma; 
 
-/*double analyticalSolution(double x);
-double ourFunction(double h, int n);
-void print(double a[], int l);
-void problem1b(int n);
-void problem1c(int n);*/ 
+
 
 
 double analyticalSolution(double x) { // Calculates the analytical value of u for a given x.
@@ -44,12 +40,8 @@ void print(double a[], int l) { // Prints arrays. Makes for easy testing of the 
 // The functions return CPU time for forward and backward substitution
 double problem1b(int n,bool writeToFile) {
 
-	
-
-
 	double const h = static_cast<double>(1) / (n + 1);
-	//cout << "Step size h: " << h << endl;
-
+	
 	double *a = new double[n];
 	double *b = new double[n]; // Allocating memory for all the arrays using dynamic memory.
 	double *c = new double[n]; 
@@ -67,7 +59,6 @@ double problem1b(int n,bool writeToFile) {
 	for (int i = 1; i < n + 1; i++) { // Assigns the appropriate values for x given our step size, h. Also assigns values to the vectors b,c and a. 
 		x[i] = i * h;
 	}
-
 
 	//////////////////////////////////////////////////////////////
     // CODE TO READ VECTORS a,b AND c FROM FILE/THROUGH CONSOLE //
@@ -114,20 +105,15 @@ double problem1b(int n,bool writeToFile) {
 		
 	}
 
-	
-	
-	
 	for (int i = 0; i < data.size(); i++) {//The following code assigns the appropriate elements of data to a, b and c. 
 		a[i] = data[i][0];
 		b[i] = data[i][1]; 
 		c[i] = data[i][2]; 
 
 	}
-
 	ifile.close(); 
 
-
-	//Lets the user input a, b and c from the console
+	//////Lets the user input a, b and c from the console///////////
 
 	//cout << "type the elements of a,b, and c vector" << endl; 
 	//for (int i = 0; i < n; i++) {
@@ -190,7 +176,7 @@ double problem1b(int n,bool writeToFile) {
 
 	//Writes to file if writeToFile == 1
 	if (writeToFile) {
-		ofstream toFile("gaussian_elimination.txt");
+		ofstream toFile("gaussian_elimination1000x1000.txt");
 
 
 		toFile << "x" << setw(20) << "u" << setw(20) << "v" << setw(20) << "e" << endl;
@@ -211,16 +197,12 @@ double problem1b(int n,bool writeToFile) {
 	delete[]b;   
 	delete[]c; 
 	delete[]a; 
- 
-
 	delete[]f; 
 	delete[]v; 
 	delete[]u;
 	delete[]e; 
-;
 	delete[]x;  
 	return time_span.count();
-
 }
 
 double problem1c(int n, bool writeToFile) {
@@ -229,7 +211,6 @@ double problem1c(int n, bool writeToFile) {
 
 	double const h = static_cast<double>(1) / (n + 1);
 	
-
 	double *b = new double[n]; // Allocating memory for all the arrays using dynamic memory.
 
 
@@ -246,12 +227,7 @@ double problem1c(int n, bool writeToFile) {
 	for (int i = 1; i < n + 1; i++) { // Assigns the appropriate values for x given our step size, h. Also assigns values to the vectors b,c and a. 
 		x[i] = i * h;
 		b[i - 1] = 2;
-		//c[i - 1] = -1;
-		//a[i - 1] = -1;
-		/*	cout << x[i] << endl; */
 	}
-
-	
 
 	for (int i = 0; i < n; i++) { // assigns appropriate values for f=h^2f_0(x_i)
 		f[i] = ourFunction(h, i + 1);
@@ -276,8 +252,6 @@ double problem1c(int n, bool writeToFile) {
 
 	duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-	//cout << "Symmetric tridiagonal matrix: " << time_span.count() << " seconds";
-	//cout << endl;
 
 	for (int i = 0; i < n; i++) { //Finds the analytical solution, u.
 		u[i] = analyticalSolution(x[i + 1]);
@@ -296,7 +270,7 @@ double problem1c(int n, bool writeToFile) {
 	}
 	cout <<"The maximum relative error was "<< max << endl; 
 	
-	
+	//Writing to file if this is writeToFile=true
 	if (writeToFile) {
 		ofstream toFile("gaussian_elimination.txt");
 
@@ -313,21 +287,15 @@ double problem1c(int n, bool writeToFile) {
 
 	//Deleting memory allocated to the different vectors
 	delete[]b;
-
-
 	delete[]f;
 	delete[]v;
 	delete[]u;
 	delete[]e;  
-
 	delete[]x;
-
 	return time_span.count();
-
-
 }
 
-double problem1e(int n, bool writeToFile) {
+double problem1e(int n) {
 
 	double h = static_cast<double>(1) / (n + 1);
 
@@ -339,20 +307,19 @@ double problem1e(int n, bool writeToFile) {
 	vec x(n+2);
 	vec f(n+2); 
 	vec v(n+2);
-	/*v[0] = 0; 
-	v[n + 2] = 1; */
 
 
 
 
 
+	//Creating the tridiagonal matrix A
 	for (int i = 0; i < n+1; i++) {
 		A(i, i) = b(i);
 		A(i, i + 1) = a(i);
 		A(i + 1, i) = c(i);
 	}
 	A(n+1, n+1) = b(n+1);
-	//A.print();
+
 
 	for (int i = 0; i < n+2; i++) {
 		x(i) = i * h; 
@@ -360,15 +327,10 @@ double problem1e(int n, bool writeToFile) {
 	}
 	
 	
-	//x.raw_print();
-	//A.print(); 
-
-	/*v = solve(A,f);*/
-
 
 	mat L, U;
 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
+	//LU decomposing A and solving for v
 	lu(L, U, A);
 
 	vec w = solve(L, f);
